@@ -40,8 +40,8 @@ class GroceryScreen extends StatelessWidget {
           Expanded(
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Two products per row
-                childAspectRatio: 0.75, // Adjust card height
+                crossAxisCount: 2,
+                childAspectRatio: 0.7, // Adjusted aspect ratio
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
               ),
@@ -64,52 +64,36 @@ class GroceryScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(12),
-                            ),
-                            child: Image.asset(
-                              product['image'],
-                              height: 100,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
+                      // ✅ Fixed Image Container with Clipping
+                      ClipRRect(
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(12),
+                        ),
+                        child: SizedBox(
+                          height: 120, // Fixed height
+                          width: double.infinity,
+                          child: Image.asset(
+                            product['image'],
+                            fit: BoxFit.cover,
                           ),
-                          Positioned(
-                            bottom: 8,
-                            left: 8,
-                            child: Text(
-                              product['discount'],
-                              style: const TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
-                            ),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 7, 52, 88),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          product['discount'],
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10,
                           ),
-                          Positioned(
-                            top: 8,
-                            right: 8,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 7, 52, 88),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: const Text(
-                                '50% OFF',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Padding(
