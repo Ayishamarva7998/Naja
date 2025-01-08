@@ -18,145 +18,132 @@ class GroceryScreen extends StatelessWidget {
       'discount': '50% OFF',
       'image': 'assets/nyxcream.jpg',
     },
+    {
+      'name': 'Lamb Mince',
+      'weight': '400g',
+      'price': 30.50,
+      'originalPrice': 40.50,
+      'discount': '25% OFF',
+      'image': 'assets/nyxcream.jpg',
+    },
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('NAJA-Grocery App'),
+        title: const Text('homescreen'),
         backgroundColor: Colors.green,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'FEATURED FESTIVE DEALS',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
+         
           Expanded(
-            child: SingleChildScrollView(
-              child: Wrap(
-                spacing: 8.0,
-                runSpacing: 8.0,
-                children: products.map((product) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width / 2 - 12,
-                    margin: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade300,
-                          blurRadius: 5,
-                          offset: const Offset(0, 2),
+            child: GridView.builder(
+              padding: const EdgeInsets.all(8.0),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3, // Ensures 3 containers per row
+                crossAxisSpacing: 2.0, // Horizontal spacing
+                mainAxisSpacing: 2.0, // Vertical spacing
+                childAspectRatio: 0.59, // Controls the container height
+              ),
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                final product = products[index];
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade300,
+                        blurRadius: 5,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(12),
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                       
-                        ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(12),
-                          ),
-                          child: SizedBox(
-                            height: 120,
-                            width: double.infinity,
-                            child: Image.asset(
-                              product['image'],
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 7, 52, 88),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            product['discount'],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10,
-                            ),
+                        child: SizedBox(
+                          height: 100,
+                          width: double.infinity,
+                          child: Image.asset(
+                            product['image'],
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            product['name'],
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          product['weight'],
+                      ),
+                      const SizedBox(height: 4),
+                      
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          product['name'],
+                          textAlign: TextAlign.center,
                           style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 9,
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'AED ${product['price'].toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  Text(
-                                    'AED ${product['originalPrice'].toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                      decoration: TextDecoration.lineThrough,
-                                      color: Colors.grey,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        product['weight'],
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 9,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'AED ${product['price'].toStringAsFixed(2)}',
+                                  style: const TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 9,
                                   ),
                                 ),
-                                child: const Text('Add'),
-                              ),
-                            ],
-                          ),
+                                Text(
+                                  'AED ${product['originalPrice'].toStringAsFixed(2)}',
+                                  style: const TextStyle(
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Colors.grey,
+                                    fontSize: 9,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 20,
+                              width: 50,
+                              child: Center(child: Text('Add',style:TextStyle(fontSize: 9) ,)),
+                              decoration: BoxDecoration(color: Colors.amber,
+                              borderRadius: BorderRadius.circular(6)),
+                              
+                            )
+                          ],
                         ),
-                        const SizedBox(height: 8),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
         ],
