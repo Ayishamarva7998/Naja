@@ -8,7 +8,7 @@ class GroceryScreen extends StatelessWidget {
       'price': 23.75,
       'originalPrice': 33.75,
       'discount': '20% OFF',
-      'image': 'assets/nyxcream.jpg',
+      'image': 'assets/maccream.jpg',
     },
     {
       'name': 'Fresh cut Tilapia Fillet',
@@ -16,7 +16,7 @@ class GroceryScreen extends StatelessWidget {
       'price': 23.75,
       'originalPrice': 33.75,
       'discount': '50% OFF',
-      'image': 'assets/nyxcream.jpg',
+      'image': 'assets/maccream.jpg',
     },
     {
       'name': 'Lamb Mince',
@@ -24,7 +24,7 @@ class GroceryScreen extends StatelessWidget {
       'price': 30.50,
       'originalPrice': 40.50,
       'discount': '25% OFF',
-      'image': 'assets/nyxcream.jpg',
+      'image': 'assets/maccream.jpg',
     },
   ];
 
@@ -131,7 +131,7 @@ class GroceryScreen extends StatelessWidget {
                             Container(
                               height: 20,
                               width: 50,
-                              child: Center(child: Text('Add',style:TextStyle(fontSize: 9) ,)),
+                              child: const Center(child: Text('Add',style:TextStyle(fontSize: 9) ,)),
                               decoration: BoxDecoration(color: Colors.amber,
                               borderRadius: BorderRadius.circular(6)),
                               
