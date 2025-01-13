@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:naja/carousel.dart';
 import 'package:naja/kkk.dart';
+import 'package:naja/profile.dart';
 import 'package:naja/widgets/deals_widget.dart';
 import 'package:naja/home.dart';
 import 'package:naja/widgets/stores_widget.dart';
@@ -30,7 +31,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         
       ),
-      home:HomeScreen() ,
+      home:ProfileScreen() ,
     );
   }
 }
