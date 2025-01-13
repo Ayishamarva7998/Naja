@@ -127,7 +127,7 @@ class StoreCard extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              // Rating badge at bottom-right
+             
               Positioned(
                 bottom: 8,
                 right: 8,

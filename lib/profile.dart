@@ -6,45 +6,54 @@ class ProfileScreen extends StatelessWidget {
   final List<DashboardItem> _dashboardItems = [
     DashboardItem(
       title: 'Points Earned',
-      icon: Icons.stars,
+     image: '',
+     
       color: Colors.indigo,
       isSpecial: true,
     ),
     DashboardItem(
       title: 'Orders',
       subtitle: 'View and manage all your previous orders',
-      icon: Icons.shopping_bag_outlined,
+      // icon: Icons.shopping_bag_outlined,
+      image: 'assets/orders.png',
     ),
     DashboardItem(
       title: 'Mostly Ordered',
       subtitle: 'Reorder your most frequently purchased items quickly',
-      icon: Icons.shopping_cart_outlined,
+      image: 'assets/mostlyorderd.png',
+      // icon: Icons.shopping_cart_outlined,
     ),
     DashboardItem(
       title: 'Language',
       subtitle: 'English',
-      icon: Icons.translate,
+      image: 'assets/language.png',
+      // icon: Icons.translate,
       showChevron: true,
     ),
     DashboardItem(
       title: 'Help Center',
-      icon: Icons.help_outline,
+      image: 'assets/helpcenter.png',
+      // icon: Icons.help_outline,
     ),
     DashboardItem(
       title: 'FAQs',
-      icon: Icons.question_answer_outlined,
+      // icon: Icons.question_answer_outlined,
+      image: 'assets/fAQ.png'
     ),
     DashboardItem(
       title: 'Terms and Conditions',
-      icon: Icons.description_outlined,
+      // icon: Icons.description_outlined,
+      image: 'assets/terms.png',
     ),
     DashboardItem(
       title: 'Privacy Policy',
-      icon: Icons.shield_outlined,
+      // icon: Icons.shield_outlined,
+      image: 'assets/privacy.png',
     ),
     DashboardItem(
       title: 'Logout',
-      icon: Icons.logout,
+      // icon: Icons.logout,
+      image: 'assets/logout.png'
     ),
   ];
 
@@ -187,7 +196,8 @@ class ProfileScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(
         children: [
-          Icon(item.icon, color: Colors.grey, size: 20),
+          Image.asset(item.image, color: Colors.grey,),
+          
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -222,7 +232,7 @@ class ProfileScreen extends StatelessWidget {
 class DashboardItem {
   final String title;
   final String? subtitle;
-  final IconData icon;
+  final String image;
   final Color? color;
   final bool showChevron;
   final bool isSpecial;
@@ -230,7 +240,7 @@ class DashboardItem {
   DashboardItem({
     required this.title,
     this.subtitle,
-    required this.icon,
+    required this.image,
     this.color,
     this.showChevron = false,
     this.isSpecial = false,
