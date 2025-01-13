@@ -66,37 +66,36 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row( 
-        
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                 const Text(
+              Text(
                 '+971 50 987 6543',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              Image.asset('assets/edit.png',height: 30,width: 60,color: Colors.grey,)
-              ],),
-             
-              const Row(
+              SizedBox(height: 4),
+              Row(
                 children: [
-                
-                  SizedBox(width: 4),
-                  Text(
-                    'Al Saif Gardens',
-                    style: TextStyle(color: Colors.grey),
+                  Row(
+                    children: [
+                      Icon(Icons.location_on_outlined),
+                      Text(
+                        'Al Saif Gardens',
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w600),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ],
           ),
-          const Spacer(),
-         
+          Image.asset('assets/edit.png',
+              height: 24, width: 24, color: const Color.fromARGB(255, 8, 0, 0),)
         ],
       ),
     );
@@ -104,65 +103,74 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildGridView(BuildContext context) {
     return GridView.builder(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 1,
-        childAspectRatio: 4,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 2,
+        childAspectRatio: MediaQuery.of(context).size.width > 600 ? 3 : 4,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
       ),
       itemCount: _dashboardItems.length,
       itemBuilder: (context, index) {
         final item = _dashboardItems[index];
-        return item.isSpecial ? _buildPointsCard(item) : _buildRegularCard(item);
+        return item.isSpecial
+            ? _buildPointsCard(item)
+            : _buildRegularCard(item);
       },
     );
   }
 
   Widget _buildPointsCard(DashboardItem item) {
     return Container(
+      height: 100, // Fixed height for points card
       decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage('assets/background.png')),
-     
-        borderRadius: BorderRadius.circular(12),
+        image: const DecorationImage(
+          image: AssetImage('assets/background.png'),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.circular(18),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Icon(item.icon, color: Colors.yellow),
-          // SizedBox(width: 16),
-          // Expanded(
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       Text(
-          //         "You've Earned: 80 points",
-          //         style: TextStyle(
-          //           color: Colors.white,
-          //           fontWeight: FontWeight.bold,
-          //           fontSize: 14,
-          //         ),
-          //       ),
-          //       SizedBox(height: 4),
-          //       Text(
-          //         '80/100 Points (Next Claim: 20 Points Needed)',
-          //         style: TextStyle(color: Colors.white70, fontSize: 12),
-          //       ),
-          //     ],
+          Column(
+            children: [
+              // Image.asset('')
+
+              Text(
+                "You've Earned: 80 points",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              Text(
+                '80/100 Ponits(Next Claim: 20 Ponits Needed)',
+                style: TextStyle(color: Colors.white, fontSize: 10),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 276, top: 20),
+                child: Text(
+                  'View Details',
+                  style: TextStyle(color: Colors.white, fontSize: 9),
+                ),
+              )
+            ],
+          ),
+
+          // TextButton(
+          //   onPressed: () {},
+          //   style: TextButton.styleFrom(
+          //     padding: const EdgeInsets.symmetric(horizontal: 8),
+          //     minimumSize: const Size(50, 30),
+          //   ),
+          //   child: const Text(
+          //     '',
+          //     style: TextStyle(color: Colors.white),
           //   ),
           // ),
-          TextButton(
-            onPressed: () {},
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              minimumSize: const Size(60, 36),
-            ),
-            child: const Text(
-              'View Details',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
         ],
       ),
     );
@@ -170,16 +178,17 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildRegularCard(DashboardItem item) {
     return Container(
+      height: 50,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.grey.shade200),
       ),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(
         children: [
-          Icon(item.icon, color: Colors.grey),
-          const SizedBox(width: 16),
+          Icon(item.icon, color: Colors.grey, size: 20),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,17 +196,23 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 Text(
                   item.title,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
                 ),
                 if (item.subtitle != null)
                   Text(
                     item.subtitle!,
                     style: const TextStyle(color: Colors.grey, fontSize: 12),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
               ],
             ),
           ),
-          if (item.showChevron) const Icon(Icons.chevron_right, color: Colors.grey),
+          if (item.showChevron)
+            const Icon(Icons.chevron_right, color: Colors.grey, size: 20),
         ],
       ),
     );
