@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:naja/colors.dart';
+import 'package:naja/helpers/colors.dart';
 
 class DealsWidget extends StatelessWidget {
   final String image;

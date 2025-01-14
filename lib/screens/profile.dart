@@ -51,6 +51,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text(''),),
       body: SafeArea(
         child: Column(
           children: [
@@ -67,38 +68,71 @@ class ProfileScreen extends StatelessWidget {
   Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '+971 50 987 6543',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 4),
-              Row(
-                children: [
-                  Icon(Icons.location_on_outlined),
-                  Text(
-                    'Al Saif Gardens',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+      child: Container(
+        height: 90,
+        width: 360,
+        
+       decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 239, 237, 237),
+        borderRadius: BorderRadius.circular(12)
+       ),
+        child: Column(children: [
+         
+          const Padding(
+            padding: EdgeInsets.only(right: 240,),
+            child: Text('Hi guest',style: TextStyle(fontSize: 13,fontWeight: FontWeight.w700),),
           ),
-          Image.asset(
-            'assets/edit.png',
-            height: 24,
-            width: 24,
-            color: const Color.fromARGB(255, 8, 0, 0),
+          
+          const Padding(
+            padding: EdgeInsets.only(right: 190),
+            child: Text('+971 50 987 6543',style: TextStyle(fontSize: 13,fontWeight: FontWeight.w400),),
           ),
-        ],
+          Padding(
+            padding: const EdgeInsets.only(right: 195),
+            child: Container(height: 30,width: 100,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: const Color.fromARGB(255, 237, 211, 209)),
+            child: const Row(children: [
+              Icon(Icons.location_on_outlined,size: 14,),Text('Al Saif Gardens',style: TextStyle(fontSize: 10,fontWeight: FontWeight.w500),)
+            ],),),
+          ),
+
+          
+         
+        ],),
+        
+        
+        
+    
+// children: [
+          // const Column(
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     Text(
+          //       '+971 50 987 6543',
+          //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          //     ),
+          //     SizedBox(height: 4),
+          //     Row(
+          //       children: [
+          //         Icon(Icons.location_on_outlined),
+          //         Text(
+          //           'Al Saif Gardens',
+          //           style: TextStyle(
+          //             color: Colors.black,
+          //             fontWeight: FontWeight.w600,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ],
+          // ),
+          // Image.asset(
+          //   'assets/edit.png',
+          //   height: 24,
+          //   width: 24,
+          //   color: const Color.fromARGB(255, 8, 0, 0),
+          // ),
+        // ],
       ),
     );
   }
@@ -151,15 +185,15 @@ class ProfileScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 10),
               ),
               const SizedBox(height: 20),
-              TextButton(
-                onPressed: () {
-                  // Add points details navigation logic here
-                },
-                child: const Text(
-                  'View Details',
-                  style: TextStyle(color: Colors.white, fontSize: 9),
-                ),
-              ),
+              // TextButton(
+              //   onPressed: () {
+              //     // Add points details navigation logic here
+              //   },
+              //   child: const Text(
+              //     '',
+              //     style: TextStyle(color: Colors.white, fontSize: 9),
+              //   ),
+              // ),
             ],
           ),
         ],

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:naja/carousel.dart';
-import 'package:naja/delete.dart';
+import 'package:naja/widgets/carousel.dart';
+import 'package:naja/widgets/delete.dart';
 import 'package:naja/kkk.dart';
-import 'package:naja/location_screen.dart';
-import 'package:naja/profile.dart';
+import 'package:naja/screens/location_screen.dart';
+import 'package:naja/screens/profile.dart';
 import 'package:naja/widgets/deals_widget.dart';
-import 'package:naja/home.dart';
+import 'package:naja/screens/home.dart';
 import 'package:naja/widgets/stores_widget.dart';
 
 void main() {
