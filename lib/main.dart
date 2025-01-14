@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:naja/edit_screen.dart';
 import 'package:naja/widgets/carousel.dart';
 import 'package:naja/widgets/delete.dart';
 import 'package:naja/kkk.dart';
@@ -28,7 +29,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Naja',
    
-      home:LocationUI() ,
+      home:ProfileScreen() ,
     );
   }
 }
