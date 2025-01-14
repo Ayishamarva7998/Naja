@@ -6,54 +6,45 @@ class ProfileScreen extends StatelessWidget {
   final List<DashboardItem> _dashboardItems = [
     DashboardItem(
       title: 'Points Earned',
-     image: '',
-     
+      image: '',
       color: Colors.indigo,
       isSpecial: true,
     ),
     DashboardItem(
       title: 'Orders',
       subtitle: 'View and manage all your previous orders',
-      // icon: Icons.shopping_bag_outlined,
       image: 'assets/orders.png',
     ),
     DashboardItem(
       title: 'Mostly Ordered',
       subtitle: 'Reorder your most frequently purchased items quickly',
       image: 'assets/mostlyorderd.png',
-      // icon: Icons.shopping_cart_outlined,
     ),
     DashboardItem(
       title: 'Language',
       subtitle: 'English',
       image: 'assets/language.png',
-      // icon: Icons.translate,
       showChevron: true,
     ),
     DashboardItem(
       title: 'Help Center',
       image: 'assets/helpcenter.png',
-      // icon: Icons.help_outline,
     ),
     DashboardItem(
       title: 'FAQs',
-      // icon: Icons.question_answer_outlined,
-      image: 'assets/fAQ.png'
+      image: 'assets/fAQ.png',
     ),
     DashboardItem(
       title: 'Terms and Conditions',
-      // icon: Icons.description_outlined,
       image: 'assets/terms.png',
     ),
     DashboardItem(
       title: 'Privacy Policy',
-      // icon: Icons.shield_outlined,
       image: 'assets/privacy.png',
     ),
     DashboardItem(
       title: 'Logout',
-      // icon: Icons.logout,
-      image: 'assets/logout.png'
+      image: 'assets/logout.png',
     ),
   ];
 
@@ -89,22 +80,24 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(height: 4),
               Row(
                 children: [
-                  Row(
-                    children: [
-                      Icon(Icons.location_on_outlined),
-                      Text(
-                        'Al Saif Gardens',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w600),
-                      ),
-                    ],
+                  Icon(Icons.location_on_outlined),
+                  Text(
+                    'Al Saif Gardens',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
             ],
           ),
-          Image.asset('assets/edit.png',
-              height: 24, width: 24, color: const Color.fromARGB(255, 8, 0, 0),)
+          Image.asset(
+            'assets/edit.png',
+            height: 24,
+            width: 24,
+            color: const Color.fromARGB(255, 8, 0, 0),
+          ),
         ],
       ),
     );
@@ -123,15 +116,15 @@ class ProfileScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = _dashboardItems[index];
         return item.isSpecial
-            ? _buildPointsCard(item)
-            : _buildRegularCard(item);
+            ? _buildPointsCard(context, item)
+            : _buildRegularCard(context, item);
       },
     );
   }
 
-  Widget _buildPointsCard(DashboardItem item) {
+  Widget _buildPointsCard(BuildContext context, DashboardItem item) {
     return Container(
-      height: 100, // Fixed height for points card
+      height: 100,
       decoration: BoxDecoration(
         image: const DecorationImage(
           image: AssetImage('assets/background.png'),
@@ -140,93 +133,184 @@ class ProfileScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image.asset('')
-
-              Text(
+              const Text(
                 "You've Earned: 80 points",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
-              Text(
-                '80/100 Ponits(Next Claim: 20 Ponits Needed)',
+              const Text(
+                '80/100 Points (Next Claim: 20 Points Needed)',
                 style: TextStyle(color: Colors.white, fontSize: 10),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 276, top: 20),
-                child: Text(
+              const SizedBox(height: 20),
+              TextButton(
+                onPressed: () {
+                  // Add points details navigation logic here
+                },
+                child: const Text(
                   'View Details',
                   style: TextStyle(color: Colors.white, fontSize: 9),
                 ),
-              )
+              ),
             ],
           ),
-
-          // TextButton(
-          //   onPressed: () {},
-          //   style: TextButton.styleFrom(
-          //     padding: const EdgeInsets.symmetric(horizontal: 8),
-          //     minimumSize: const Size(50, 30),
-          //   ),
-          //   child: const Text(
-          //     '',
-          //     style: TextStyle(color: Colors.white),
-          //   ),
-          // ),
         ],
       ),
     );
   }
 
-  Widget _buildRegularCard(DashboardItem item) {
-    return Container(
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      child: Row(
-        children: [
-          Image.asset(item.image, color: Colors.grey,),
-          
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  item.title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                ),
-                if (item.subtitle != null)
-                  Text(
-                    item.subtitle!,
-                    style: const TextStyle(color: Colors.grey, fontSize: 12),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-              ],
+  Widget _buildRegularCard(BuildContext context, DashboardItem item) {
+    return InkWell(
+      onTap: () {
+        if (item.title == 'Logout') {
+          showLogoutDialog(context);
+        }
+        // Add navigation logic for other items here
+      },
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Row(
+          children: [
+            Image.asset(
+              item.image,
+              color: Colors.grey,
             ),
-          ),
-          if (item.showChevron)
-            const Icon(Icons.chevron_right, color: Colors.grey, size: 20),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    item.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  if (item.subtitle != null)
+                    Text(
+                      item.subtitle!,
+                      style: const TextStyle(color: Colors.grey, fontSize: 12),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                ],
+              ),
+            ),
+            if (item.showChevron)
+              const Icon(Icons.chevron_right, color: Colors.grey, size: 20),
+          ],
+        ),
       ),
     );
   }
+}
+
+Future<void> showLogoutDialog(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.white, // Set your desired background color here
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+        actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+        content: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.12,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Are you sure you want to log out?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'You will need to log in again to access your account.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    side: const BorderSide(color: Color.fromARGB(255, 19, 8, 227), width: 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 19, 8, 227),
+                      fontSize: 16,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 19, 8, 227),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                  child: const Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    // Add logout logic here
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    },
+  );
 }
 
 class DashboardItem {

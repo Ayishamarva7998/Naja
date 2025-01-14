@@ -38,6 +38,7 @@ dependencies:
   geolocator: ^13.0.2
   google_fonts: ^6.2.1
   google_maps_flutter: ^2.10.0
+  place_picker_google: ^0.0.14
 
 dev_dependencies:
   flutter_lints: ^4.0.0

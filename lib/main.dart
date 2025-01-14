@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:naja/carousel.dart';
+import 'package:naja/delete.dart';
 import 'package:naja/kkk.dart';
 import 'package:naja/location_screen.dart';
 import 'package:naja/profile.dart';
@@ -26,12 +27,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Naja',
-      theme: ThemeData(
-        
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-        
-      ),
+   
       home:LocationUI() ,
     );
   }
