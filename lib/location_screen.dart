@@ -10,7 +10,10 @@ class LocationUI extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Location',style: TextStyle(fontWeight: FontWeight.w700,fontSize: 16),),
+          title: const Text(
+            'Location',
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+          ),
           centerTitle: true,
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
@@ -56,34 +59,40 @@ class _LocationScreenState extends State<LocationScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-     TextField(
-  decoration: InputDecoration(
-    hintText: 'Search location',
-    prefixIcon: const Icon(Icons.search),
-    filled: true,
-    fillColor: const Color.fromARGB(255, 248, 247, 247),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0),
-      borderSide: BorderSide(color: const Color.fromARGB(255, 241, 238, 238), width: 1.0),
-    ),
-    
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.0),
-      borderSide: BorderSide(color: const Color.fromARGB(255, 241, 238, 238), width: 1.0), // Color when unfocused
-    ),
-    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-  ),
-),
-
+          TextField(
+            decoration: InputDecoration(
+              hintText: 'Search location',
+              prefixIcon: const Icon(Icons.search),
+              filled: true,
+              fillColor: const Color.fromARGB(255, 248, 247, 247),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(
+                    color: Color.fromARGB(255, 241, 238, 238),
+                    width: 1.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                    color: const Color.fromARGB(255, 241, 238, 238),
+                    width: 1.0), // Color when unfocused
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            ),
+          ),
           const SizedBox(height: 8),
           const Row(
             children: [
-              Icon(Icons.my_location, color:  Color.fromARGB(255, 16, 16, 192),),
+              Icon(
+                Icons.my_location,
+                color: Color.fromARGB(255, 16, 16, 192),
+              ),
               SizedBox(width: 8),
               Text(
                 'Current Location',
                 style: TextStyle(
-                  color:  Color.fromARGB(255, 16, 16, 192),
+                  color: Color.fromARGB(255, 16, 16, 192),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -122,9 +131,9 @@ class _LocationScreenState extends State<LocationScreen> {
             },
           ),
           Positioned(
-            bottom: 5, 
+            bottom: 5,
             left: 20,
-            right: 20, 
+            right: 20,
             child: Container(
               height: 50,
               width: 330,
@@ -134,14 +143,30 @@ class _LocationScreenState extends State<LocationScreen> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(right: 230),
-                    child: Text('Al Saif Gardens',style: TextStyle(fontSize: 12,fontWeight: FontWeight.w700),),
+                    child: Text(
+                      'Al Saif Gardens',
+                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: 270),
-                    child: Text('Bur Dubai',style: TextStyle(fontSize: 10),),
+                    child: Text(
+                      'Bur Dubai',
+                      style: TextStyle(fontSize: 10),
+                    ),
                   ),
                 ],
               ),
+            ),
+          ),
+        
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.35, 
+            left: MediaQuery.of(context).size.width * 0.45, 
+            child: const Icon(
+              Icons.location_on,
+              size: 40,
+              color: Colors.red, 
             ),
           ),
         ],
