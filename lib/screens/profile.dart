@@ -1,6 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:naja/card_widget.dart';
+import 'package:naja/edit_screen.dart';
+import 'package:naja/model/edit_model.dart';
 import 'package:naja/model/profile_model.dart';
+import 'package:naja/screens/edit_screen.dart';
+import 'package:naja/edit_screen.dart';
+import 'package:naja/screens/location_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -56,66 +62,135 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(title: const Text('')),
       body: SafeArea(
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
-            : Column(
-                children: [
-                  _buildHeader(),
-                  // Expanded(
-                  //   child: _buildGridView(context),
-                  // ),
-                ],
-              ),
+            : SingleChildScrollView(
+
+              child: Column(
+                  children: [
+                    _buildHeader(),
+                    _buildAdditionalContainer(),
+                   SettingsWidget()
+                 ,
+                  ],
+                ),
+            ),
       ),
     );
   }
 
   Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Container(
-        height: 120,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 239, 237, 237),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+    child: Container(
+      height: 110,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 239, 237, 237),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, top: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  user != null ? 'Hi ${user!.name}' : 'Hi guest',
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                ),
+              IconButton(
+  onPressed: () {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => EditScreenx(),));
+//  Navigator.push(context, MaterialPageRoute(builder: (context) => ,))
+  },
+  icon: Image.asset('assets/edit.png'),
+),
+
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, top: 4.0),
+            child: Text(
+              user?.email ?? 'Email not available',
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, top: 4.0),
+            child: Text(
+              user?.phone ?? 'Phone not available',
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+            ),
+          ),
+          
+          
+        ],
+        
+      ),
+      
+    ),
+    
+  );
+  
+}
+Widget _buildAdditionalContainer() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+    child:
+Container(
+  height: 100,
+  width: double.infinity,
+  decoration: BoxDecoration(
+    image: DecorationImage(image: AssetImage('assets/background.png'), fit: BoxFit.cover),
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: Column(
+    children: [
+
+      Padding(
+        padding: const EdgeInsets.only(top: 20, left: 10),
+        child: Row(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: Text(
-                user != null ? 'Hi ${user!.name}' : 'Hi guest',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 4.0),
-              child: Text(
-                user?.email ?? 'Email not available',
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 4.0),
-              child: Text(
-                user?.phone ?? 'Phone not available',
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
-              ),
+            Image.asset('assets/coin.png', height: 25, width: 50),
+            SizedBox(width: 8), 
+            Text(
+              'You\'ve earned: 80 points',
+              style: TextStyle(fontSize: 15, color: Colors.white),
             ),
           ],
         ),
       ),
-    );
-  }
+      
+     
+      Padding(
+        padding: const EdgeInsets.only(left: 10, top: 5),
+        child: Text(
+          '80/100 points (Next Claim: 20 points Needed)',
+          style: TextStyle(fontSize: 12, color: Colors.white),
+        ),
+      ),
+      
+     
+      Padding(
+        padding: const EdgeInsets.only(left: 200, top: 5),
+        child: Text(
+          'View Details',
+          style: TextStyle(fontSize: 9, color: Colors.white),
+        ),
+      ),
+    ],
+  ),
+)
 
-  // Widget _buildGridView(BuildContext context) {
-  //   return Container();
-  // }
+
+  );
 }
-
-
+}
