@@ -60,9 +60,9 @@ class ProfileScreenx extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
                   "You've Earned: 80 points",
                   style: TextStyle(

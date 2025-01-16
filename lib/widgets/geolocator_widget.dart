@@ -47,7 +47,7 @@ class _LocationScreenState extends State<LocationWidget> {
 
 
     Position currentPosition = await Geolocator.getCurrentPosition();
-    print("Current position: ${currentPosition.latitude}, ${currentPosition.longitude}"); // Log position
+    print("Current position: ${currentPosition.latitude}, ${currentPosition.longitude}");
 
     setState(() {
       position = currentPosition;
@@ -63,7 +63,7 @@ class _LocationScreenState extends State<LocationWidget> {
 
   
   Future<String> getAddress(double latitude, double longitude) async {
-    final String apiKey = 'AIzaSyDlsVI3xGp6G1CQwVJz-_bZueFysMHOrnI';
+    const String apiKey = 'AIzaSyDlsVI3xGp6G1CQwVJz-_bZueFysMHOrnI';
     final String url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$apiKey';
 
     try {
@@ -87,7 +87,7 @@ class _LocationScreenState extends State<LocationWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Location'),
+        title: const Text('Location'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -96,19 +96,19 @@ class _LocationScreenState extends State<LocationWidget> {
             position == null
                 ? 'Location: Not available'
                 : 'Location: ${position!.latitude}, ${position!.longitude}',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             locationName.isEmpty ? 'Address: Not available' : 'Address: $locationName',
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               fetchposition();
             },
-            child: Text('Get Location and Address'),
+            child: const Text('Get Location and Address'),
           ),
         ],
       ),

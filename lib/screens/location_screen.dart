@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:naja/service/location/location_service.dart';
-
+import 'package:geolocator/geolocator.dart';
 
 class LocationUI extends StatelessWidget {
   const LocationUI({Key? key}) : super(key: key);
@@ -27,7 +26,7 @@ class LocationUI extends StatelessWidget {
             },
           ),
         ),
-        body: LocationScreen(),
+        body: const LocationScreen(),
       ),
     );
   }
@@ -42,29 +41,71 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   late GoogleMapController _controller;
-  final LatLng _initialPosition = const LatLng(25.276987, 55.296249);
-  String address = 'Loading...';
+  LatLng? _currentPosition; 
+  String address = 'Fetching location...';
 
   @override
   void initState() {
     super.initState();
-    _getAddress();
+    _fetchCurrentLocation();
   }
 
-  // Fetch address using the LocationApiService
-  Future<void> _getAddress() async {
+  Future<void> _fetchCurrentLocation() async {
     try {
-      LocationApiService locationApiService = LocationApiService();
-      final addressResult = await locationApiService.getAddress(
-        _initialPosition.latitude,
-        _initialPosition.longitude,
+    
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        setState(() {
+          address = 'Location services are disabled.';
+        });
+        return;
+      }
+
+      
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          setState(() {
+            address = 'Location permissions are denied.';
+          });
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        setState(() {
+          address = 'Location permissions are permanently denied.';
+        });
+        return;
+      }
+
+      
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
       );
+
       setState(() {
-        address = addressResult;
+        _currentPosition = LatLng(position.latitude, position.longitude);
+      });
+
+     
+      if (_controller != null) {
+        _controller.animateCamera(
+          CameraUpdate.newLatLngZoom(
+            _currentPosition!,
+            15, 
+          ),
+        );
+      }
+
+    
+      setState(() {
+        address = 'Latitude: ${position.latitude}, Longitude: ${position.longitude}';
       });
     } catch (e) {
       setState(() {
-        address = 'Error fetching address';
+        address = 'Error fetching location: $e';
       });
     }
   }
@@ -95,14 +136,12 @@ class _LocationScreenState extends State<LocationScreen> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
                 borderSide: const BorderSide(
-                    color: Color.fromARGB(255, 241, 238, 238),
-                    width: 1.0),
+                    color: Color.fromARGB(255, 241, 238, 238), width: 1.0),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide(
-                    color: const Color.fromARGB(255, 241, 238, 238),
-                    width: 1.0),
+                borderSide: const BorderSide(
+                    color: Color.fromARGB(255, 241, 238, 238), width: 1.0),
               ),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -134,28 +173,22 @@ class _LocationScreenState extends State<LocationScreen> {
     return Expanded(
       child: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/locationbg.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
           GoogleMap(
             initialCameraPosition: CameraPosition(
-              target: _initialPosition,
+              target: _currentPosition ?? const LatLng(0, 0), 
               zoom: 15,
             ),
             onMapCreated: (controller) {
               _controller = controller;
             },
-            markers: {
-              Marker(
-                markerId: const MarkerId('currentLocation'),
-                position: _initialPosition,
-              ),
-            },
+            markers: _currentPosition != null
+                ? {
+                    Marker(
+                      markerId: const MarkerId('currentLocation'),
+                      position: _currentPosition!,
+                    ),
+                  }
+                : {},
           ),
           Positioned(
             bottom: 5,
@@ -169,24 +202,15 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(right: 230),
+                    padding: const EdgeInsets.only(right: 10),
                     child: Text(
                       address,
-                      style:
-                          const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w700),
                     ),
                   ),
                 ],
               ),
-            ),
-          ),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.35,
-            left: MediaQuery.of(context).size.width * 0.45,
-            child: const Icon(
-              Icons.location_on,
-              size: 40,
-              color: Colors.red,
             ),
           ),
         ],
@@ -200,15 +224,15 @@ class _LocationScreenState extends State<LocationScreen> {
       child: Container(
         height: 45,
         width: 350,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: const Color.fromARGB(255, 16, 16, 192),
+        ),
         child: const Center(
           child: Text(
             'Confirm Location',
             style: TextStyle(color: Colors.white),
           ),
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: const Color.fromARGB(255, 16, 16, 192),
         ),
       ),
     );
