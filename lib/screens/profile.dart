@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:naja/card_widget.dart';
-import 'package:naja/edit_screen.dart';
+import 'package:naja/widgets/card_widget.dart';
+
 import 'package:naja/model/edit_model.dart';
 import 'package:naja/model/profile_model.dart';
 import 'package:naja/screens/edit_screen.dart';
-import 'package:naja/edit_screen.dart';
+
 import 'package:naja/screens/location_screen.dart';
 
 class ProfileScreen extends StatefulWidget {

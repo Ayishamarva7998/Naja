@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 
 class LocationWidget extends StatefulWidget {
   const LocationWidget({super.key});
@@ -11,36 +13,76 @@ class LocationWidget extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationWidget> {
   Position? position;
+  String locationName = '';
 
-  fetchposition()async{
+
+  fetchposition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
+    
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    print("Location service enabled: $serviceEnabled"); 
 
-    if(!serviceEnabled){
-
-    Fluttertoast.showToast(msg: 'Location service is disabled');
+    if (!serviceEnabled) {
+      Fluttertoast.showToast(msg: 'Location service is disabled');
+      return;
     }
-    permission =await Geolocator.checkPermission();
-    if(permission==LocationPermission.denied){
+
+   
+    permission = await Geolocator.checkPermission();
+    print("Location permission: $permission"); 
+    if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if(permission==LocationPermission.denied){
+      if (permission == LocationPermission.denied) {
         Fluttertoast.showToast(msg: 'You denied the permission');
+        return;
       }
     }
-    if(permission==LocationPermission.deniedForever){
+
+    if (permission == LocationPermission.deniedForever) {
       Fluttertoast.showToast(msg: 'You denied the permission forever');
+      return;
     }
-    Position currentposition = await Geolocator.getCurrentPosition();
+
+
+    Position currentPosition = await Geolocator.getCurrentPosition();
+    print("Current position: ${currentPosition.latitude}, ${currentPosition.longitude}"); // Log position
+
     setState(() {
-       position =currentposition;
+      position = currentPosition;
     });
 
-
-
-    
+   
+    String address = await getAddress(currentPosition.latitude, currentPosition.longitude);
+    print("Address fetched: $address"); 
+    setState(() {
+      locationName = address;
+    });
   }
+
+  
+  Future<String> getAddress(double latitude, double longitude) async {
+    final String apiKey = 'AIzaSyDlsVI3xGp6G1CQwVJz-_bZueFysMHOrnI';
+    final String url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$apiKey';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['results'].isNotEmpty) {
+          return data['results'][0]['formatted_address'];
+        } else {
+          return 'No address found';
+        }
+      } else {
+        return 'Error fetching address: ${response.statusCode}';
+      }
+    } catch (e) {
+      return 'Error: $e';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,11 +92,26 @@ class _LocationScreenState extends State<LocationWidget> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-       Text(position==null?' Location':position.toString(),style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),),
-       ElevatedButton(onPressed: (){
-        fetchposition();
-       }, child: Text('Get Location'))
-      ],),
+          Text(
+            position == null
+                ? 'Location: Not available'
+                : 'Location: ${position!.latitude}, ${position!.longitude}',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+          ),
+          SizedBox(height: 10),
+          Text(
+            locationName.isEmpty ? 'Address: Not available' : 'Address: $locationName',
+            style: TextStyle(fontSize: 18),
+          ),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              fetchposition();
+            },
+            child: Text('Get Location and Address'),
+          ),
+        ],
+      ),
     );
   }
 }

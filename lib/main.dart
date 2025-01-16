@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:naja/edit_screen.dart';
-
 import 'package:naja/screens/ui.dart';
 import 'package:naja/widgets/carousel.dart';
 import 'package:naja/widgets/delete.dart';
@@ -9,6 +7,7 @@ import 'package:naja/screens/location_screen.dart';
 import 'package:naja/screens/profile.dart';
 import 'package:naja/widgets/deals_widget.dart';
 import 'package:naja/screens/home.dart';
+import 'package:naja/widgets/geolocator_widget.dart';
 import 'package:naja/widgets/stores_widget.dart';
 
 void main() {
@@ -31,7 +30,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Naja',
    
-      home:ProfileScreen() ,
+      home:LocationUI() ,
     );
   }
 }
