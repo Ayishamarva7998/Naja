@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 
 class LocationUI extends StatelessWidget {
   const LocationUI({Key? key}) : super(key: key);
@@ -41,8 +43,9 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   late GoogleMapController _controller;
-  LatLng? _currentPosition; 
+  LatLng? _currentPosition;
   String address = 'Fetching location...';
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -52,7 +55,6 @@ class _LocationScreenState extends State<LocationScreen> {
 
   Future<void> _fetchCurrentLocation() async {
     try {
-    
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         setState(() {
@@ -61,7 +63,6 @@ class _LocationScreenState extends State<LocationScreen> {
         return;
       }
 
-      
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
@@ -80,33 +81,62 @@ class _LocationScreenState extends State<LocationScreen> {
         return;
       }
 
-      
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
 
       setState(() {
         _currentPosition = LatLng(position.latitude, position.longitude);
-      });
-
-     
-      if (_controller != null) {
-        _controller.animateCamera(
-          CameraUpdate.newLatLngZoom(
-            _currentPosition!,
-            15, 
-          ),
-        );
-      }
-
-    
-      setState(() {
         address = 'Latitude: ${position.latitude}, Longitude: ${position.longitude}';
       });
+
+      _controller.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          _currentPosition!,
+          15,
+        ),
+      );
     } catch (e) {
       setState(() {
         address = 'Error fetching location: $e';
       });
+    }
+  }
+
+  Future<void> _searchLocation(String query) async {
+    if (query.isEmpty) return;
+
+    final String apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4NTc3MjkxLCJpYXQiOjE3MzY4NDkyOTEsImp0aSI6ImNhZjUwYzNjNjg1YjRiMzdhYzk4NjI3MzUzNWEwMThhIiwidXNlcl9pZCI6NTd9.anFHbEtPAPlcOIs_k-ebERcrgr7ezWN-NKgJRga_Lf4'; // Replace with your API key
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$query&inputtype=textquery&fields=geometry&key=$apiKey';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+      final data = json.decode(response.body);
+
+      if (data['candidates'].isNotEmpty) {
+        final location = data['candidates'][0]['geometry']['location'];
+        final LatLng searchedLocation = LatLng(location['lat'], location['lng']);
+
+        setState(() {
+          _currentPosition = searchedLocation;
+        });
+
+        _controller.animateCamera(
+          CameraUpdate.newLatLngZoom(
+            searchedLocation,
+            15,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Location not found')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error searching location: $e')),
+      );
     }
   }
 
@@ -128,6 +158,7 @@ class _LocationScreenState extends State<LocationScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextField(
+            controller: searchController,
             decoration: InputDecoration(
               hintText: 'Search location',
               prefixIcon: const Icon(Icons.search),
@@ -136,33 +167,12 @@ class _LocationScreenState extends State<LocationScreen> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
                 borderSide: const BorderSide(
-                    color: Color.fromARGB(255, 241, 238, 238), width: 1.0),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                borderSide: const BorderSide(
-                    color: Color.fromARGB(255, 241, 238, 238), width: 1.0),
-              ),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Row(
-            children: [
-              Icon(
-                Icons.my_location,
-                color: Color.fromARGB(255, 16, 16, 192),
-              ),
-              SizedBox(width: 8),
-              Text(
-                'Current Location',
-                style: TextStyle(
-                  color: Color.fromARGB(255, 16, 16, 192),
-                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 241, 238, 238),
+                  width: 1.0,
                 ),
               ),
-            ],
+            ),
+            onSubmitted: _searchLocation,
           ),
         ],
       ),
@@ -171,49 +181,22 @@ class _LocationScreenState extends State<LocationScreen> {
 
   Widget _buildMapSection() {
     return Expanded(
-      child: Stack(
-        children: [
-          GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: _currentPosition ?? const LatLng(0, 0), 
-              zoom: 15,
-            ),
-            onMapCreated: (controller) {
-              _controller = controller;
-            },
-            markers: _currentPosition != null
-                ? {
-                    Marker(
-                      markerId: const MarkerId('currentLocation'),
-                      position: _currentPosition!,
-                    ),
-                  }
-                : {},
-          ),
-          Positioned(
-            bottom: 5,
-            left: 20,
-            right: 20,
-            child: Container(
-              height: 50,
-              width: 330,
-              color: Colors.white,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Text(
-                      address,
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+      child: GoogleMap(
+        initialCameraPosition: CameraPosition(
+          target: _currentPosition ?? const LatLng(0, 0),
+          zoom: 15,
+        ),
+        onMapCreated: (controller) {
+          _controller = controller;
+        },
+        markers: _currentPosition != null
+            ? {
+                Marker(
+                  markerId: const MarkerId('currentLocation'),
+                  position: _currentPosition!,
+                ),
+              }
+            : {},
       ),
     );
   }

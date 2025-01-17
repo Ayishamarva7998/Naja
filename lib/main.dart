@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:naja/screens/category_screen.dart';
+import 'package:naja/screens/login_screen.dart';
 import 'package:naja/screens/ui.dart';
+import 'package:naja/searchh.dart';
 import 'package:naja/widgets/carousel.dart';
 import 'package:naja/widgets/delete.dart';
 import 'package:naja/kkk.dart';
@@ -30,7 +33,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Naja',
    
-      home:LocationUI() ,
+      home:Categories() ,
     );
   }
 }
