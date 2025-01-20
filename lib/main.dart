@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Naja',
    
-      home:Categories() ,
+      home:CategoryScreen(),
     );
   }
 }
