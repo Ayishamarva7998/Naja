@@ -28,7 +28,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     try {
       final fetchedCategories = await _categoryService.fetchCategories();
       
-    
       final List<CategoryModel> paddedCategories = List.from(fetchedCategories);
       while (paddedCategories.length < totalRows * itemsPerRow) {
         paddedCategories.add(CategoryModel.empty(paddedCategories.length));
@@ -52,10 +51,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
       child: Scaffold(
         appBar: AppBar(
           leading: const Icon(Icons.arrow_back_ios_new_outlined),
-          title: 
-          const Padding(
+          title: const Padding(
             padding: EdgeInsets.only(left: 95),
-            child: Text('Categories',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),),
+            child: Text(
+              'Categories',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
           ),
           backgroundColor: Colors.white,
         ),
@@ -115,18 +116,17 @@ class CategoryItemWidget extends StatelessWidget {
                 width: 110,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(20), 
+                  borderRadius: BorderRadius.circular(20),
                 ),
               ),
               Positioned(
                 top: 0,
                 child: Container(
-                  height: 75, 
+                  height: 70,
                   width: 110,
-                  decoration:  BoxDecoration(
-                    color: Color(0xFFE5FFE3),
-                    borderRadius: BorderRadius.circular(20)
-                    
+                  decoration: BoxDecoration(
+                    color: Color(int.parse(category.color)), 
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
               ),
@@ -134,12 +134,12 @@ class CategoryItemWidget extends StatelessWidget {
                 Positioned(
                   top: 12,
                   child: SizedBox(
-                    height: 70,
+                    height: 65,
                     width: 75,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(35),
+                      borderRadius: BorderRadius.circular(2),
                       child: Image.network(
-                        category.image, 
+                        category.image,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
                             const Icon(Icons.broken_image, size: 40),
@@ -168,3 +168,4 @@ class CategoryItemWidget extends StatelessWidget {
     );
   }
 }
+
