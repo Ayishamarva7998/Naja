@@ -168,4 +168,3 @@ class CategoryItemWidget extends StatelessWidget {
     );
   }
 }
-
