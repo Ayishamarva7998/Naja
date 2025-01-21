@@ -31,7 +31,7 @@ class SettingsWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 12),
       children: [
         _buildMenuItem(
-          image: 'assets/orders.png', // Replace with your image path
+          image: 'assets/orders.png', 
           title: 'Orders',
           subtitle: 'View and manage all your previous orders',
           onTap: onOrdersTap ?? () {},

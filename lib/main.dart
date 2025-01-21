@@ -1,40 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:naja/screens/category_screen.dart';
-import 'package:naja/screens/login_screen.dart';
-import 'package:naja/screens/ui.dart';
-import 'package:naja/searchh.dart';
-import 'package:naja/widgets/carousel.dart';
-import 'package:naja/widgets/delete.dart';
-import 'package:naja/kkk.dart';
+import 'package:naja/controller/location_controller.dart';
 import 'package:naja/screens/location_screen.dart';
-import 'package:naja/screens/profile.dart';
-import 'package:naja/widgets/deals_widget.dart';
-import 'package:naja/screens/home.dart';
-import 'package:naja/widgets/geolocator_widget.dart';
-import 'package:naja/widgets/stores_widget.dart';
+import 'package:provider/provider.dart';
+
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LocationProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Naja',
-   
-      home:CategoryScreen(),
+      home: const LocationScreen(),
     );
   }
 }
-

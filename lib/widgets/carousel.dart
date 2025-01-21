@@ -12,7 +12,8 @@ class _CarouselState extends State<Carousel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: 
+      Container(
         width: MediaQuery.of(context).size.width,
         child: CarouselSlider(
           options: CarouselOptions(

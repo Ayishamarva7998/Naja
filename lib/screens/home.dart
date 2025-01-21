@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -60,9 +61,31 @@ class _HomeScreenState extends State<HomeScreen> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                carouselslider(txt: 'celebrate'),
-                const SizedBox(width: 20),
-                carouselslider(txt: 'Chicken curry masala'),
+                  Container(
+        width: MediaQuery.of(context).size.width,
+        child: CarouselSlider(
+          options: CarouselOptions(
+            viewportFraction: 1,
+            autoPlay: true,
+          ),
+          items: [
+            'assets/Festive Banner.png',
+          ].map((i) {
+            return Builder(
+              builder: (BuildContext context) {
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.asset(
+                    i,
+                    fit: BoxFit.cover,  
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                );
+              },
+            );
+          }).toList(),
+        ),
+      ),
               ],
             ),
           ),
@@ -144,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Components remain the same
+  
   Container categoryitems2({
     required String productname,
     required Color imgcolor,
@@ -163,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 45,
             width: 70,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(28),
+              borderRadius: BorderRadius.circular(10),
               color: imgcolor,
             ),
             child: Padding(
