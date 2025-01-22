@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadToken();
   }
 
-  /// Load token from local storage
+  
   Future<void> _loadToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -28,6 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+     print("User Token in build: $_userToken");
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: (){
