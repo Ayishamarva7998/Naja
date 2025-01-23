@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:naja/model/category_model.dart';
-import 'package:naja/screens/categorydetails.dart';
 import 'package:naja/screens/subcategory_screen.dart';
 import 'package:naja/service/category/category_service.dart';
-
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -18,7 +16,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   bool isLoading = true;
   bool isError = false;
   String errorMessage = '';
-  
+
   final int totalRows = 5;
   final int itemsPerRow = 3;
 
@@ -28,15 +26,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
     _loadCategories();
   }
 
+  // Function to load categories
   Future<void> _loadCategories() async {
     try {
       final fetchedCategories = await _categoryService.fetchCategories();
-      
+
+      // Padding the categories to fit the grid
       final List<CategoryModel> paddedCategories = List.from(fetchedCategories);
       while (paddedCategories.length < totalRows * itemsPerRow) {
         paddedCategories.add(CategoryModel.empty(paddedCategories.length));
       }
-      
+
       setState(() {
         categories = paddedCategories;
         isLoading = false;
@@ -79,6 +79,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             children: List.generate(itemsPerRow, (colIndex) {
                               final itemIndex = (rowIndex * itemsPerRow) + colIndex;
                               final category = categories[itemIndex];
+                              
+                              // Check if category is empty based on its id or other fields
+                              if (category.id == -1 || category.name.isEmpty) {
+                                return const SizedBox(width: 110, height: 50);
+                              }
+                              
                               return CategoryItemWidget(category: category);
                             }),
                           ),
@@ -101,23 +107,17 @@ class CategoryItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (category.isEmpty) {
-      return const SizedBox(
-        width: 110,
-        height: 50,
-      );
-    }
-
     return GestureDetector(
-      onTap: () {
-      
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SubcategoryScreen()
-          ),
-        );
-      },
+      onTap: category.id != -1
+          ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SubcategoryScreen(parentId: category.id),
+                ),
+              );
+            }
+          : null,
       child: Column(
         children: [
           SizedBox(
@@ -175,7 +175,6 @@ class CategoryItemWidget extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  Text('ID:${category.id}')
               ],
             ),
           ),

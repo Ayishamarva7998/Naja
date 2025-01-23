@@ -6,31 +6,39 @@ class CategoryService {
   static const String baseUrl = 'https://naja.qnltest.xyz/api/';
   static const String endpoint = 'category/web';
 
+  /// Fetches the list of categories from the API.
   Future<List<CategoryModel>> fetchCategories() async {
     try {
       final response = await http.get(
         Uri.parse(baseUrl + endpoint),
         headers: {
-          'Content-Type': 'application/json',  
-        
+          'Content-Type': 'application/json', // Set content type for API calls
         },
       );
-      
+
+      // Check the HTTP response status code
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+
+        // Ensure 'status' is true before parsing the data
         if (data['status'] == true) {
-          List<CategoryModel> categories = List<CategoryModel>.from(
-            data['data'].map((x) => CategoryModel.fromJson(x))
+          // Parse the 'data' field into a list of CategoryModel objects
+          return List<CategoryModel>.from(
+            data['data'].map((x) => CategoryModel.fromJson(x)),
           );
-          return categories;
         } else {
-          throw Exception('Server returned error: ${data['message']}');
+          // Throw an exception if the server returns an error status
+          throw Exception('Server error: ${data['message']}');
         }
       } else {
-        throw Exception('Failed to load categories. Status code: ${response.statusCode}');
+        // Handle unexpected HTTP status codes
+        throw Exception(
+          'Failed to load categories. HTTP Status code: ${response.statusCode}',
+        );
       }
     } catch (e) {
-      throw Exception('Failed to load categories: $e');
+      // Catch and rethrow any errors that occur during the request
+      throw Exception('Failed to fetch categories: $e');
     }
   }
 }
