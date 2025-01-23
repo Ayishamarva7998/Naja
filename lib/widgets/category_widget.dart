@@ -98,7 +98,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                           width: 80,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
-                              // color: item['colors'],
+                           
                               image: DecorationImage(
                                   image:
                                    AssetImage(item['image'])

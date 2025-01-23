@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:naja/controller/location_controller.dart';
+import 'package:naja/screens/category_screen.dart';
 import 'package:naja/screens/categorydetails.dart';
+import 'package:naja/screens/products_screen.dart';
+import 'package:naja/screens/sub_ui.dart';
 import 'package:naja/screens/subcategory_screen.dart';
 import 'package:naja/screens/home.dart';
+import 'package:naja/widgets/bottombar.dart';
 
 import 'package:provider/provider.dart';
 
@@ -24,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:HomeScreens()
+      home:SubcategoryScreen()
     );
   }
 }
