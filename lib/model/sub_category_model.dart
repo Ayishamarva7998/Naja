@@ -26,9 +26,9 @@ class Subcategory {
   Subcategory({required this.id, required this.name, this.childSubcategories = const []});
 
   factory Subcategory.fromJson(Map<String, dynamic> json) {
-    var childSubcategoryList = (json['subcategories'] as List?)
-        ?.map((subcategory) => Subcategory.fromJson(subcategory))
-        .toList() ?? [];
+    var childSubcategoryList = (json['subcategories'] as List? ?? [])
+        .map((child) => Subcategory.fromJson(child))
+        .toList();
 
     return Subcategory(
       id: json['id'],

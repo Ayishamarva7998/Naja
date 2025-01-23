@@ -31,6 +31,7 @@ class SubcategoryService {
 
   static Future<List<Subcategory>?> fetchChildCategories(int parentId) async {
     final String url = '${baseUrl}category/web/$parentId';
+
     try {
       final response = await http.get(Uri.parse(url));
 
@@ -51,6 +52,4 @@ class SubcategoryService {
       throw Exception('An error occurred: $e');
     }
   }
-
-  static fetchSubSubcategories(int subcategoryId) {}
 }
