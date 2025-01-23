@@ -6,8 +6,8 @@ import 'package:naja/screens/products_screen.dart';
 import 'package:naja/screens/sub_ui.dart';
 import 'package:naja/screens/subcategory_screen.dart';
 import 'package:naja/screens/home.dart';
+import 'package:naja/screens/subsubscreen.dart';
 import 'package:naja/widgets/bottombar.dart';
-
 import 'package:provider/provider.dart';
 
 void main() {
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:SubcategoryScreen()
+      home:SubsubcategoryScreen()
     );
   }
 }

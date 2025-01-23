@@ -55,6 +55,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:naja/model/sub_category_model.dart';
 import 'package:naja/screens/subcategory_service.dart';
 
 class SubcategoryScreen extends StatefulWidget {
@@ -63,9 +64,11 @@ class SubcategoryScreen extends StatefulWidget {
 }
 
 class _SubcategoryScreenState extends State<SubcategoryScreen> {
-  List<Map<String, dynamic>>? categories;
-  int? expandedCategoryId; // Track the currently expanded category ID
+  List<Category>? categories;
   bool isLoading = true;
+  bool isChildLoading = false;
+  List<Subcategory>? childSubcategories;
+  int? expandedSubcategoryId;
 
   @override
   void initState() {
@@ -73,9 +76,10 @@ class _SubcategoryScreenState extends State<SubcategoryScreen> {
     fetchCategories();
   }
 
+  // Fetch categories from API
   Future<void> fetchCategories() async {
     try {
-      final data = await CategoryService.fetchAllCategories();
+      final data = await SubcategoryService.fetchAllCategories();
       setState(() {
         categories = data;
         isLoading = false;
@@ -88,12 +92,35 @@ class _SubcategoryScreenState extends State<SubcategoryScreen> {
     }
   }
 
+  // Fetch child categories when a subcategory is clicked
+  Future<void> fetchChildSubcategories(int subcategoryId) async {
+    setState(() {
+      isChildLoading = true;
+      expandedSubcategoryId = subcategoryId;
+    });
+
+    try {
+      final data = await SubcategoryService.fetchChildCategories(subcategoryId);
+      setState(() {
+        childSubcategories = data;
+        isChildLoading = false;
+      });
+    } catch (error) {
+      setState(() {
+        isChildLoading = false;
+      });
+      print('Error fetching child subcategories: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           icon: Image.asset('assets/arrowback.png', height: 20),
         ),
         actions: [
@@ -101,8 +128,7 @@ class _SubcategoryScreenState extends State<SubcategoryScreen> {
         ],
         title: Padding(
           padding: const EdgeInsets.only(left: 60),
-          child: const 
-          Text(
+          child: const Text(
             'Meat chicken & Fish',
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
           ),
@@ -114,77 +140,53 @@ class _SubcategoryScreenState extends State<SubcategoryScreen> {
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-               
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: categories!.map((category) {
+                        children: categories!
+                            .expand((category) => category.subcategories)
+                            .map((subcategory) {
                           return GestureDetector(
                             onTap: () {
-                              setState(() {
-                                expandedCategoryId =
-                                    expandedCategoryId == category['id']
-                                        ? null
-                                        : category['id']; 
-                              });
+                              fetchChildSubcategories(subcategory.id);
                             },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Text(
-                                category['name'],
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: expandedCategoryId == category['id']
-                                      ? FontWeight.bold
-                                      : FontWeight.normal,
-                                  color: expandedCategoryId == category['id']
-                                      ? Colors.black
-                                      : const Color.fromARGB(255, 62, 61, 61),
-                                ),
+                                '${subcategory.name} (ID: ${subcategory.id})',
+                                style: TextStyle(fontSize: 16, color: Colors.black),
                               ),
                             ),
                           );
                         }).toList(),
                       ),
                     ),
-
-                   
-                    if (expandedCategoryId != null)
+                    if (expandedSubcategoryId != null && isChildLoading)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                    if (expandedSubcategoryId != null && childSubcategories != null)
                       Padding(
                         padding: const EdgeInsets.only(top: 16.0),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
-                            children: (categories!
-                                    .firstWhere((category) =>
-                                        category['id'] == expandedCategoryId)[
-                                'subcategories'] as List<dynamic>)
-                                .map((subcategory) {
-                              return GestureDetector(
-                                onTap: () {
-                                  print('Tapped on ${subcategory['name']}');
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 8.0),
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(28),
-                                    border: Border.all(color: Colors.grey),
-                                  ),
-                                  child: Text(
-                                    subcategory['name'],
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.black,
+                            children: childSubcategories!
+                                .map((childSubcategory) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                    child: Text(
+                                      '${childSubcategory.name} (ID: ${childSubcategory.id})',
+                                      style: TextStyle(fontSize: 14, color: Colors.black),
                                     ),
-                                  ),
-                                ),
-                              );
-                            }).toList(),
+                                  );
+                                })
+                                .toList(),
                           ),
                         ),
                       ),
+                     
                   ],
                 )
               : Center(child: Text('No categories found!')),

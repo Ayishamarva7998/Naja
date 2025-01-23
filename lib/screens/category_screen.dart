@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:naja/model/category_model.dart';
+import 'package:naja/screens/categorydetails.dart';
+import 'package:naja/screens/subcategory_screen.dart';
 import 'package:naja/service/category/category_service.dart';
+
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -14,6 +17,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   List<CategoryModel> categories = [];
   bool isLoading = true;
   bool isError = false;
+  String errorMessage = '';
   
   final int totalRows = 5;
   final int itemsPerRow = 3;
@@ -41,6 +45,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       setState(() {
         isError = true;
         isLoading = false;
+        errorMessage = e.toString();
       });
     }
   }
@@ -63,7 +68,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
         body: isLoading
             ? const Center(child: CircularProgressIndicator())
             : isError
-                ? const Center(child: Text('Failed to load categories'))
+                ? Center(child: Text('Failed to load categories: $errorMessage'))
                 : SingleChildScrollView(
                     child: Column(
                       children: List.generate(totalRows, (rowIndex) {
@@ -103,68 +108,80 @@ class CategoryItemWidget extends StatelessWidget {
       );
     }
 
-    return Column(
-      children: [
-        SizedBox(
-          height: 100,
-          width: 110,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                height: 120,
-                width: 110,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              Positioned(
-                top: 0,
-                child: Container(
-                  height: 70,
+    return GestureDetector(
+      onTap: () {
+      
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SubcategoryScreen()
+          ),
+        );
+      },
+      child: Column(
+        children: [
+          SizedBox(
+            height: 100,
+            width: 110,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  height: 120,
                   width: 110,
                   decoration: BoxDecoration(
-                    color: Color(int.parse(category.color)), 
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-              ),
-              if (category.image.isNotEmpty)
                 Positioned(
-                  top: 12,
-                  child: SizedBox(
-                    height: 65,
-                    width: 75,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(2),
-                      child: Image.network(
-                        category.image,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.broken_image, size: 40),
+                  top: 0,
+                  child: Container(
+                    height: 70,
+                    width: 110,
+                    decoration: BoxDecoration(
+                      color: Color(int.parse(category.color)),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+                if (category.image.isNotEmpty)
+                  Positioned(
+                    top: 12,
+                    child: SizedBox(
+                      height: 65,
+                      width: 75,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(2),
+                        child: Image.network(
+                          category.image,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(Icons.broken_image, size: 40),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              if (category.name.isNotEmpty)
-                Positioned(
-                  bottom: 4,
-                  child: Text(
-                    category.name,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
+                if (category.name.isNotEmpty)
+                  Positioned(
+                    bottom: 4,
+                    child: Text(
+                      category.name,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                ),
-            ],
+                  Text('ID:${category.id}')
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-      ],
+          const SizedBox(height: 8),
+        ],
+      ),
     );
   }
 }

@@ -33,6 +33,7 @@ class _bottombarState extends State<bottombar> {
       currentIndex: myindex,
       items: [
         BottomNavigationBarItem(
+          
             icon: Image.asset('assets/homeicon.png'),
             label: ''
             
@@ -49,7 +50,7 @@ class _bottombarState extends State<bottombar> {
            ),
         BottomNavigationBarItem(
             icon: Image.asset('assets/profileicon.png',height: 20,width: 20,
-            color: myindex==3? Colors.black:const Color.fromARGB(255, 4, 57, 148),),
+            color: myindex==3? Colors.black: Color.fromARGB(255, 4, 57, 148),),
             label: ''
            
             ),

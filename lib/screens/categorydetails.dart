@@ -1,42 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:naja/model/category_model.dart';
 
-class ChildCategoryScreen extends StatefulWidget {
-  final int parentCategoryId;
-  final List<dynamic> subcategories; 
+class CategoryDetailScreen extends StatelessWidget {
+  final CategoryModel category;
 
-  ChildCategoryScreen({required this.parentCategoryId, required this.subcategories});
-
-  @override
-  _ChildCategoryScreenState createState() => _ChildCategoryScreenState();
-}
-
-class _ChildCategoryScreenState extends State<ChildCategoryScreen> {
-  bool isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-   
-  }
+  const CategoryDetailScreen({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Child Categories of ${widget.parentCategoryId}'),
+        title: Text(category.name),
       ),
-      body: widget.subcategories.isEmpty
-          ? Center(child: Text('No child categories available!'))
-          : ListView.builder(
-              itemCount: widget.subcategories.length,
-              itemBuilder: (context, index) {
-                final childCategory = widget.subcategories[index];
-                return ListTile(
-                  title: Text(childCategory['name']),
-                  subtitle: Text(childCategory['description'] ?? "No description"),
-                );
-              },
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.network(category.image),
+            SizedBox(height: 20),
+            Text(
+              category.name,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 10),
+            Text("Category Color: ${category.color}"),
+          ],
+        ),
+      ),
     );
   }
 }
