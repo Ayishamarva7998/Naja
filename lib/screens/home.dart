@@ -98,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
             ),
           ),
+          
           Padding(
             padding: const EdgeInsets.all(25),
             child: Column(

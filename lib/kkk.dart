@@ -2,18 +2,21 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:google_fonts/google_fonts.dart';
+// import 'package:naja/helpers/colors.dart';
+// import 'package:naja/helpers/utils.dart';
+// import 'package:naja/widgets/category_widget.dart';
 
 
 
-// class HomeScreen extends StatefulWidget {
+// class HomeScreens extends StatefulWidget {
 
-//   HomeScreen({super.key});
+//   HomeScreens({super.key});
 
 //   @override
-//   State<HomeScreen> createState() => _HomeScreenState();
+//   State<HomeScreens> createState() => _HomeScreenState();
 // }
 
-// class _HomeScreenState extends State<HomeScreen> {
+// class _HomeScreenState extends State<HomeScreens> {
 //   final carouselimges=[
 //     'assets/carouselimg.png'
 //   ];
@@ -179,7 +182,7 @@
 //             ],
 //           ),
 
-//           CategoryWidget(),
+//           // CategoryWidget(),
         
 
 //           //deal of the day

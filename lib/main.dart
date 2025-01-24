@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:naja/controller/bottombar_controller.dart';
 import 'package:naja/controller/location_controller.dart';
+import 'package:naja/kkk.dart';
 import 'package:naja/screens/category_screen.dart';
 import 'package:naja/screens/categorydetails.dart';
 import 'package:naja/screens/products_screen.dart';
@@ -15,6 +17,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LocationProvider()), 
+        ChangeNotifierProvider(create: (_)=>BottomBarProvider())
       ],
       child: const MyApp(),
     ),
@@ -28,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:bottombar(),
+      home:Bottombar(),
     );
   }
 }
